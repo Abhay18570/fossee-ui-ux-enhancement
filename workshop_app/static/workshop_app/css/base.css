@@ -81,16 +81,23 @@ img {
 }
 
 .site-navbar {
-    padding: 1rem 0;
+    padding: 0.9rem 0;
     background: rgba(15, 25, 40, 0.88);
     box-shadow: 0 16px 40px rgba(10, 18, 29, 0.24);
+}
+
+.site-navbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .site-brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.9rem;
+    gap: 0.8rem;
     color: #fff;
+    margin-right: 1.25rem;
 }
 
 .site-brand:hover,
@@ -98,22 +105,22 @@ img {
     color: #fff;
 }
 
-.site-brand span {
+.site-brand-copy {
     display: flex;
     flex-direction: column;
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
 .site-brand strong {
-    font-size: 1rem;
-    letter-spacing: 0.01em;
+    font-size: 1.02rem;
+    letter-spacing: 0.015em;
 }
 
 .site-brand small {
     color: rgba(255, 255, 255, 0.72);
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
 }
 
 .site-brand-mark {
@@ -133,14 +140,27 @@ img {
 }
 
 .site-nav-list {
-    gap: 0.25rem;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.site-navbar-collapse {
+    align-items: center;
+}
+
+.site-nav-list .nav-item {
+    margin: 0;
 }
 
 .site-nav-list .nav-link,
 .site-user-toggle,
 .site-link-btn {
+    display: inline-flex;
+    align-items: center;
     color: rgba(255, 255, 255, 0.86);
     font-weight: 500;
+    padding: 0.55rem 0.85rem;
+    border-radius: 999px;
 }
 
 .site-nav-list .nav-link:hover,
@@ -150,6 +170,7 @@ img {
 .site-link-btn:hover,
 .site-link-btn:focus {
     color: #fff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .site-auth-actions,
@@ -674,10 +695,35 @@ select:focus,
         padding: 0.85rem 0;
     }
 
+    .site-navbar-inner {
+        align-items: flex-start;
+    }
+
+    .site-navbar-collapse {
+        width: 100%;
+        margin-top: 0.9rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .site-nav-list {
+        align-items: stretch;
+        gap: 0.2rem;
+    }
+
+    .site-nav-list .nav-link,
+    .site-user-toggle,
+    .site-link-btn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.7rem 0.85rem;
+    }
+
     .site-user-nav {
         flex-direction: column;
         align-items: flex-start;
         margin-top: 1rem;
+        width: 100%;
     }
 
     .footer-content,
