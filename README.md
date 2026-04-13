@@ -179,17 +179,19 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## Design Principles Used
 
+The improvements were guided by a small set of practical UI/UX principles suited to an existing Django monolith:
+
 ### 1. Clear visual hierarchy
 
-Large headings, concise supporting copy, and section grouping were used to help users scan quickly and understand the next action.
+Large headings, cleaner section spacing, clearer labels, and stronger action buttons were used to help users quickly understand what each page is for and what action to take next.
 
 ### 2. Reduced friction
 
-Important actions such as login, registration, proposal submission, and workshop review are now easier to find and visually prioritized.
+Important flows such as login, registration, workshop proposal, and dashboard review were designed to feel easier to scan and use, with less clutter and fewer competing elements.
 
 ### 3. Consistency
 
-The redesign uses a shared design language across pages:
+The redesign uses a shared design language across pages so the portal feels like one product instead of a collection of unrelated screens:
 
 - common hero pattern
 - shared cards
@@ -199,25 +201,36 @@ The redesign uses a shared design language across pages:
 
 ### 4. Lightweight practicality
 
-The implementation keeps the existing stack intact and does not introduce heavy UI frameworks or frontend build tooling.
+The implementation keeps the existing stack intact, avoids unnecessary frameworks, and improves the UI through templates and shared CSS rather than architectural rewrites.
+
+### 5. Accessibility and readability
+
+Accessibility was treated as part of the design, not as a separate layer. That meant improving contrast, focus visibility, semantic structure, label clarity, and mobile readability while keeping the look clean and understated.
 
 ## Responsiveness Approach
 
-The UI is built to work across mobile, tablet, and desktop using:
+Responsiveness was handled through small, shared frontend changes rather than per-page hacks. The goal was to make the existing server-rendered pages adapt better across mobile, tablet, and desktop.
+
+The UI was made responsive using:
 
 - CSS Grid for responsive content sections
 - Flexbox for nav, actions, and metadata rows
-- responsive spacing and container sizing
-- table wrappers to prevent horizontal breakage
+- responsive spacing, gutters, and container sizing
+- `minmax()`-based layouts so content can shrink without breaking
+- table wrappers and horizontal scroll where needed
 - stacked button and form layouts on narrow screens
+- shared mobile breakpoints in the main stylesheet
 
 ### Mobile-first improvements applied
 
-- reduced padding on small screens
-- stacked CTA buttons and form fields
-- responsive card grid for workshop types
-- removal of fixed footer overlap issues
-- better touch-friendly spacing for navigation and actions
+- reduced padding on small screens to avoid cramped layouts
+- stacked CTA buttons and form fields for easier tapping
+- responsive card and metrics grids that collapse to one column when needed
+- improved navbar behavior in the collapsed mobile state
+- better handling of overflow in tables and narrow content areas
+- more touch-friendly spacing for navigation and actions
+
+In practice, I validated responsiveness by focusing on the shared layout primitives first: the base container, shared grids, form layouts, hero sections, navigation, and table wrappers. That let the improvement scale across many pages without rewriting each template separately.
 
 ## Accessibility Improvements
 
@@ -237,23 +250,46 @@ The UI is built to work across mobile, tablet, and desktop using:
 
 ## Design vs Performance Trade-Offs
 
+I intentionally chose lightweight design improvements over flashy or dependency-heavy changes. The main trade-off was to improve perceived quality and usability while keeping the app simple to run and maintain.
+
 The redesign favors noticeable UX improvements while staying lightweight:
 
 - Reused Bootstrap and the existing JS stack instead of introducing new frontend dependencies
 - Added typography and richer layout styling via CSS rather than JavaScript-heavy interactions
 - Kept server-rendered templates and backend logic unchanged for reliability
+- Focused on shared layout and component-like CSS patterns rather than large per-page visual effects
 
-Trade-off:
+Trade-offs made:
 
-- The visual layer is significantly improved, but still constrained by the existing Django template structure and legacy project organization
+- The UI is cleaner and more modern, but still intentionally constrained by the existing Django template structure
+- I avoided heavy animations, large media assets, and frontend build tooling to preserve performance and simplicity
+- Some deeper UX improvements were left out because they would require backend or workflow changes, not just presentation updates
 
 ## Challenges Faced
 
-- The project is a Django monolith with older template patterns and table-heavy layouts.
-- The existing repository had no `package.json`, so the frontend had to be improved entirely through templates and static files.
+The most challenging part of the task was improving the UI meaningfully without turning it into a rewrite.
+
+This project is a Django monolith with:
+
+- older template patterns
+- table-heavy layouts
+- no frontend build system
+- shared pages that depend heavily on existing backend flows
+
+Because of that, the approach was to work from the shared layer outward:
+
+1. Improve the base layout, spacing, typography, buttons, forms, and navigation first.
+2. Apply small page-level enhancements only where they gave the most value.
+3. Avoid any changes that would risk breaking form handling, routing, or backend logic.
+
+There were also a few setup-related challenges:
+
+- The project has no `package.json`, so all frontend work had to stay within Django templates and static assets.
 - The initial environment used Python `3.12`, which required `setuptools` to avoid the `distutils` import issue with Django `3.0.7`.
 - The repository was missing initial migrations for `cms` and `teams`, which prevented a clean local run until those were added.
 - The existing test suite contains a pre-existing broken import: `edit_profile` is referenced in `workshop_app/tests/test_views.py` but does not exist in `workshop_app/views.py`.
+
+Overall, the challenge was balancing polish with restraint. I approached it by making small, layered improvements that were realistic for the project’s current structure and safe to maintain.
 
 ## Verification Notes
 
