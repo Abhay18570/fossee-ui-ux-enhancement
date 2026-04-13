@@ -16,7 +16,8 @@
     --radius-lg: 24px;
     --radius-md: 16px;
     --radius-sm: 10px;
-    --container-max: 1180px;
+    --container-max: 1120px;
+    --content-gutter: clamp(1rem, 2vw, 1.5rem);
 }
 
 html {
@@ -193,7 +194,7 @@ img {
 
 .base-content {
     flex: 1;
-    padding: 3rem 0 4rem;
+    padding: clamp(2rem, 4vw, 3.25rem) 0 clamp(3rem, 5vw, 4.25rem);
 }
 
 .footer {
@@ -238,7 +239,14 @@ img {
 
 .container,
 .container-fluid {
-    width: min(100% - 2rem, var(--container-max));
+    width: min(100% - (var(--content-gutter) * 2), var(--container-max));
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.base-content .container > * + *,
+.base-content .container-fluid > * + * {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .page-shell,
@@ -270,7 +278,7 @@ img {
 }
 
 .page-hero {
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     padding: 2.2rem;
     border-radius: 28px;
     background:
@@ -688,7 +696,7 @@ select:focus,
 
 @media (max-width: 767.98px) {
     .base-content {
-        padding: 1.5rem 0 3rem;
+        padding: 1.5rem 0 2.75rem;
     }
 
     .page-hero,
