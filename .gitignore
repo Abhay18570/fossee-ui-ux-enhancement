@@ -25,6 +25,8 @@ target/
 
 #Database
 db.sqlite3
+.venv/
+package-lock.json
 
 #MAC OS specific
 .DS_Store
@@ -45,3 +47,7 @@ db.sqlite3
 #images/gif
 *.png
 *.gif
+!docs/screenshots/**/*.png
+!docs/screenshots/**/*.gif
+!docs/screenshots/**/*.jpg
+!docs/screenshots/**/*.jpeg

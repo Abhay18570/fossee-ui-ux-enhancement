@@ -1,12 +1,11 @@
 {% extends "workshop_app/base.html" %}
 {% load static %}
 
-{% block title %}
-    Propose a workshop
-{% endblock %}
+{% block title %}Propose a Workshop | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Submit a workshop proposal with your preferred type and date through the FOSSEE workshop booking portal.{% endblock %}
 
 {% block extra-dependencies %}
-    <link rel="stylesheet" href="{% static 'workshop_app/css/jquery-ui.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'workshop_app/css/jquery-ui.css' %}" type="text/css">
     <script src="{% static 'workshop_app/js/jquery-1.12.4.js' %}"></script>
     <script src="{% static 'workshop_app/js/jquery-ui.min.js' %}"></script>
 {% endblock %}
@@ -28,80 +27,125 @@
                 beforeShowDay: $.datepicker.noWeekends,
             });
 
-
             $('#disp_tnc').click(function (e) {
-                e.preventDefault()
-                if ($('#id_workshop_type').val() === '')
-                    $('.modal-body').html("<p class='text-danger'>Please select a workshop type</p>")
-                else {
+                e.preventDefault();
+                if ($('#id_workshop_type').val() === '') {
+                    $('.modal-body').html("<p class='text-danger mb-0'>Please select a workshop type first.</p>");
+                } else {
                     $.ajax({
                         url: '/workshop/type_tnc/' + $('#id_workshop_type').val(),
                         success: function (data) {
-                            $('.modal-body').html(data.tnc)
+                            $('.modal-body').html(data.tnc);
                         }
-                    })
+                    });
                 }
-            })
+            });
         });
     </script>
 {% endblock %}
 
-
 {% block content %}
-    <style type="text/css">
-        .errorlist {
-            color: red;
-        }
-
-    .modal-open .modal{
-        overflow-y: hidden;
-    }
-    </style>
-
-    <div class="container" align="center">
-        <div class="alert alert-info">
-            Note: Before proposing the workshop, please check about the workshop in the
-            <strong>Workshop Types</strong> section
-        </div>
-        <br><br>
-        <div class="col-md-6 col-md-offset-6">
-            <div class="card border-primary">
-                <div class="card-header">
-                    <h3>Propose Workshop</h3>
+    <div class="container">
+        <section class="page-hero">
+            <div class="page-hero-grid">
+                <div>
+                    <span class="page-eyebrow">Workshop Request</span>
+                    <h1 class="page-title">Propose a workshop with confidence.</h1>
+                    <p class="page-subtitle">
+                        Pick a workshop type, choose a valid date, and confirm the terms. The request is then shared with instructors for review.
+                    </p>
                 </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <form method="post">
-                            {% csrf_token %}
-                            <br/>
-                            {{ form.workshop_type }}
-                            <br>
-                            {{ form.date }}
-                            <br>
-                            {{ form.tnc_accepted }} I accept the
-                            <a href="#" id="disp_tnc" data-toggle="modal"
-                            data-target="#exampleModalCenter">
-                                terms and conditions
-                            </a>
-                            <br>
-                            {% if form.errors %}
-                                <br>
-                                <div style="text-align: left; border: 1px solid red; padding-top: 5px">
-                                    <h5 style="text-align: center; color: red; font-weight: bolder">Errors</h5>
-                                    {{ form.errors }}
-                                </div>
-                            {% endif %}
-                            <br>
-                            <button class="btn btn-success" type="submit">Submit</button>
-                        </form>
+                <div class="content-card action-card">
+                    <h2 class="section-title">Submission checklist</h2>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <dt>1</dt>
+                            <dd>Review workshop types before selecting one.</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>2</dt>
+                            <dd>Choose a weekday at least 3 days in the future.</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>3</dt>
+                            <dd>Accept the workshop terms and conditions.</dd>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br>
+        </section>
 
+        <section class="two-column-layout">
+            <article class="content-card">
+                <h2 class="section-title">Proposal form</h2>
+                <div class="callout mb-4">
+                    Before submitting, cross-check the workshop in the <strong>Workshop Types</strong> section for scope and eligibility.
+                </div>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <div class="field-group field-span-2">
+                            <label for="{{ form.workshop_type.id_for_label }}">Workshop type</label>
+                            {{ form.workshop_type }}
+                            {% if form.workshop_type.errors %}
+                                <div class="field-error">{{ form.workshop_type.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="field-group field-span-2">
+                            <label for="{{ form.date.id_for_label }}">Preferred date</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="field-error">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="field-group field-span-2">
+                            <div class="d-flex align-items-start">
+                                {{ form.tnc_accepted }}
+                                <label class="ml-3 mb-0" for="{{ form.tnc_accepted.id_for_label }}">
+                                    I accept the
+                                    <a href="#" id="disp_tnc" data-toggle="modal" data-target="#exampleModalCenter">
+                                        terms and conditions
+                                    </a>
+                                </label>
+                            </div>
+                            {% if form.tnc_accepted.errors %}
+                                <div class="field-error">{{ form.tnc_accepted.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="page-actions mt-4">
+                        <button class="btn btn-success" type="submit">Submit proposal</button>
+                        <a class="btn btn-outline-info" href="{% url 'workshop_app:workshop_type_list' %}">View workshop types</a>
+                    </div>
+                </form>
+            </article>
+
+            <article class="content-card action-card">
+                <h2 class="section-title">Helpful reminders</h2>
+                <div class="detail-list">
+                    <div class="detail-item">
+                        <dt>Scheduling</dt>
+                        <dd>Weekend dates are disabled to match the current workflow.</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Coordination</dt>
+                        <dd>Instructors are notified after a valid workshop proposal is submitted.</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Updates</dt>
+                        <dd>You can track status changes from the workshop status dashboard.</dd>
+                    </div>
+                </div>
+            </article>
+        </section>
     </div>
-    <!-- Modal -->
+
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -112,9 +156,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-
-                </div>
+                <div class="modal-body"></div>
             </div>
         </div>
     </div>

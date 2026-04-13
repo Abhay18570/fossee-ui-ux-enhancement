@@ -1,18 +1,16 @@
 {% extends 'workshop_app/base.html' %}
 
-	{% block title %}
-		Logged out
-	{% endblock %}
+{% block title %}Logged Out | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Logged out confirmation page for the FOSSEE workshop booking portal.{% endblock %}
 
-
-	{% block content %}
-		<div class="container" align="center">
-			<br>
-			<h3>You have logged out successfully.</h3>
-			<h4>If you want to login again please
-				<a href="/">click here</a>
-			</h4>
-			<br>
-		</div>
-
-	{% endblock %}
+{% block content %}
+    <div class="container">
+        <section class="empty-state">
+            <h2>You have logged out successfully.</h2>
+            <p>If you want to continue, sign back in to the portal and return to your workshop dashboard.</p>
+            <div class="page-actions justify-content-center mt-4">
+                <a class="btn btn-primary" href="{% url 'workshop_app:login' %}">Login again</a>
+            </div>
+        </section>
+    </div>
+{% endblock %}

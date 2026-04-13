@@ -45,6 +45,26 @@ class UserRegistrationForm(forms.Form):
     state = forms.ChoiceField(choices=states)
     how_did_you_hear_about_us = forms.ChoiceField(choices=source)
 
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        field_config = {
+            'username': {'class': 'form-control', 'placeholder': 'Choose a username', 'autocomplete': 'username'},
+            'email': {'class': 'form-control', 'placeholder': 'name@example.com', 'autocomplete': 'email'},
+            'password': {'class': 'form-control', 'placeholder': 'Create a password', 'autocomplete': 'new-password'},
+            'confirm_password': {'class': 'form-control', 'placeholder': 'Confirm your password', 'autocomplete': 'new-password'},
+            'title': {'class': 'custom-select'},
+            'first_name': {'class': 'form-control', 'placeholder': 'First name', 'autocomplete': 'given-name'},
+            'last_name': {'class': 'form-control', 'placeholder': 'Last name', 'autocomplete': 'family-name'},
+            'phone_number': {'class': 'form-control', 'placeholder': '10-digit phone number', 'autocomplete': 'tel'},
+            'institute': {'class': 'form-control', 'placeholder': 'Institute or organization'},
+            'department': {'class': 'custom-select'},
+            'location': {'class': 'form-control', 'placeholder': 'City or town', 'autocomplete': 'address-level2'},
+            'state': {'class': 'custom-select'},
+            'how_did_you_hear_about_us': {'class': 'custom-select'},
+        }
+        for field_name, attrs in field_config.items():
+            self.fields[field_name].widget.attrs.update(attrs)
+
     def clean_username(self):
         u_name = self.cleaned_data["username"]
         if u_name.strip(UNAME_CHARS):
@@ -170,6 +190,8 @@ class CommentsForm(forms.ModelForm):
         widgets = {
             'comment': forms.Textarea(attrs={
                 'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Share updates, context, or follow-up notes for this workshop.',
             }),
             'public': forms.CheckboxInput(attrs={
                 'class': 'form-check-input',
@@ -193,6 +215,8 @@ class WorkshopTypeForm(forms.ModelForm):
 class AttachmentFileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AttachmentFileForm, self).__init__(*args, **kwargs)
+        for field in self.visible_fields():
+            field.field.widget.attrs.update({'class': 'form-control-file'})
 
     class Meta:
         model = AttachmentFile

@@ -1,53 +1,83 @@
 {% extends 'workshop_app/base.html' %}
 
-{% block title %}
-    Login
-{% endblock %}
+{% block title %}Login | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Sign in to the FOSSEE workshop booking portal to manage workshop proposals, schedules, and profile details.{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-md-offset-6">
-                <div class="card">
-                    <div class="card-body">
-                        <form class="px-3 py-3" method="post">
-                        {% csrf_token %}
-                        {% if form.errors %}
-                            {% for field in form %}
-                                {% for error in field.errors %}
-                                    <div class="alert alert-dismissible alert-danger">
-                                        <button type="button" class="close" data-dismiss="alert">
-                                            <i class="fa fa-close"></i>
-                                        </button>
-                                        <strong>{{ error|escape }}</strong>
-                                    </div>
-                                {% endfor %}
-                            {% endfor %}
-                            {% for error in form.non_field_errors %}
+        <section class="page-hero">
+            <div class="page-hero-grid">
+                <div>
+                    <span class="page-eyebrow">Workshop Coordination</span>
+                    <h1 class="page-title">Plan workshops with less friction and more clarity.</h1>
+                    <p class="page-subtitle">
+                        Track workshop proposals, review schedules, and keep coordinators and instructors aligned from a single portal.
+                    </p>
+                    <div class="hero-metrics mt-4">
+                        <article class="stat-card">
+                            <span class="stat-label">For Coordinators</span>
+                            <span class="stat-value">Propose</span>
+                        </article>
+                        <article class="stat-card">
+                            <span class="stat-label">For Instructors</span>
+                            <span class="stat-value">Review</span>
+                        </article>
+                        <article class="stat-card">
+                            <span class="stat-label">For Teams</span>
+                            <span class="stat-value">Track</span>
+                        </article>
+                    </div>
+                </div>
+                <div class="content-card form-panel">
+                    <h2 class="section-title">Welcome back</h2>
+                    <p class="text-muted">Use your registered username and password to continue.</p>
+
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
                                 <div class="alert alert-dismissible alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <i class="fa fa-close"></i>
                                     </button>
                                     <strong>{{ error|escape }}</strong>
                                 </div>
                             {% endfor %}
-                        {% endif %}
-                        <div class="form-group">
-                          <label for="id_username">Username</label>
-                          {{ form.username }}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-dismissible alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <i class="fa fa-close"></i>
+                                </button>
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="form-grid">
+                            <div class="field-group field-span-2">
+                                <label for="id_username">Username</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="field-group field-span-2">
+                                <label for="id_password">Password</label>
+                                {{ form.password }}
+                            </div>
                         </div>
-                        <div class="form-group">
-                          <label for="id_password">Password</label>
-                          {{ form.password }}
+                        <div class="page-actions mt-4">
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                            <a class="btn btn-outline-info" href="{% url 'password_reset' %}">Forgot password</a>
                         </div>
-                        <button type="submit" class="btn btn-primary">Sign in</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'workshop_app:register' %}">New around here? Sign up</a>
-                        <a class="dropdown-item" href="{% url 'password_reset' %}">Forgot password?</a>
-                    </div>
-                </div>  
+                    </form>
+
+                    <hr>
+                    <p class="mb-0">
+                        New to the portal?
+                        <a href="{% url 'workshop_app:register' %}">Create a coordinator account</a>
+                    </p>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 {% endblock %}

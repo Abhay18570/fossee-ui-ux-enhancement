@@ -1,32 +1,38 @@
 {% extends 'workshop_app/base.html' %}
 
-{% block title %}
-    View Workshop details
-{% endblock %}
+{% block title %}{{ workshop_type.name }} | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Detailed information for the {{ workshop_type.name }} workshop type in the FOSSEE booking portal.{% endblock %}
 
 {% block content %}
     <div class="container">
-        <h2 class="text-center m-3">Workshop Details</h2>
-        <table class="table table-hover">
-            <tr class="d-flex">
-                <th class="col-3">Workshop Name :</th>
-                <td class="col">{{ workshop_type.name }}</td>
-            </tr>
-            <tr class="d-flex">
-                <th class="col-3">Duration :</th>
-                <td class="col">{{ workshop_type.duration }} day(s)</td>
-            </tr>
-            <tr class="d-flex">
-                <th class="col-3">Description :</th>
-                <td class="col">{{ workshop_type.description }}</td>
-            </tr>
-            <tr class="d-flex">
-                <th class="col-3">Terms and Conditions :</th>
-                <td class="col">{{ workshop_type.terms_and_conditions }}</td>
-            </tr>
-        </table>
+        <section class="page-hero">
+            <span class="page-eyebrow">Workshop Details</span>
+            <h1 class="page-title">{{ workshop_type.name }}</h1>
+            <p class="page-subtitle">Review the workshop format, duration, and terms before scheduling a session.</p>
+            <div class="page-actions">
+                <a class="btn btn-outline-info" href="{% url 'workshop_app:workshop_type_list' %}">Back to workshop types</a>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <dl class="detail-list">
+                <div class="detail-item">
+                    <dt>Workshop Name</dt>
+                    <dd>{{ workshop_type.name }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Duration</dt>
+                    <dd>{{ workshop_type.duration }} day{{ workshop_type.duration|pluralize }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Description</dt>
+                    <dd>{{ workshop_type.description|linebreaksbr }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Terms and Conditions</dt>
+                    <dd>{{ workshop_type.terms_and_conditions|linebreaksbr }}</dd>
+                </div>
+            </dl>
+        </section>
     </div>
-
 {% endblock %}
-
-

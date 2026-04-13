@@ -1,35 +1,64 @@
 {% extends 'workshop_app/base.html' %}
 
-	{% block title %}
-		Register
-	{% endblock %}
+{% block title %}Register | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Create a coordinator account on the FOSSEE workshop booking portal and start proposing workshops easily.{% endblock %}
 
 {% block content %}
+    <div class="container">
+        <section class="page-hero">
+            <span class="page-eyebrow">Coordinator Onboarding</span>
+            <h1 class="page-title">Register once, then manage every workshop request from one place.</h1>
+            <p class="page-subtitle">
+                This form creates a coordinator account for workshop proposals, scheduling updates, and communication with instructors.
+            </p>
+        </section>
 
-	<style type="text/css">
-    	label.required::after {
-    	content: "*";
-    	color: red;
-		}
+        <section class="split-layout">
+            <article class="content-card action-card">
+                <h2 class="section-title">Before you begin</h2>
+                <div class="callout mb-3">
+                    Use your official email and complete every required field carefully to avoid activation delays.
+                </div>
+                <div class="info-grid">
+                    <div class="detail-item">
+                        <dt>Account Type</dt>
+                        <dd>Coordinator registration</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Email Verification</dt>
+                        <dd>Activation link valid for 24 hours</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Next Step</dt>
+                        <dd>Log in after verification and complete your profile</dd>
+                    </div>
+                </div>
+            </article>
 
-		.errorlist {
-      color: red;
-    }
-	</style>
-
-	<div class="container" >
-		<br>
-		<h3>Coordinator Registration Form</h3>
-		<br>
-		<form action="" method="post">
-			{% csrf_token %}
-				<table class="table table-bordered">
-					{{ form.as_table }}
-				</table>
-
-				<button class="btn btn-primary" type="submit">Register</button>
-		</form><br>
-		<!-- Activate when Instructor registeration starts -->
-		<br>
-	</div>
+            <article class="content-card form-panel">
+                <h2 class="section-title">Create your account</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        {% for field in form %}
+                            <div class="field-group {% if field.name == 'institute' %}field-span-2{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="field-help">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="field-error">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="page-actions mt-4">
+                        <button class="btn btn-primary" type="submit">Register</button>
+                        <a class="btn btn-outline-info" href="{% url 'workshop_app:login' %}">Back to login</a>
+                    </div>
+                </form>
+            </article>
+        </section>
+    </div>
 {% endblock %}

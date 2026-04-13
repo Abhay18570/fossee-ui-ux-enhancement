@@ -1,76 +1,53 @@
 {% extends 'workshop_app/base.html' %}
 
-{% block title %}
-    Awaiting activation
-{% endblock %}
-
-{% block header %}
-    <nav class="navbar navbar-default navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand text-white" href="/">
-                    FOSSEE Workshops
-                </a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                {% if request.user.profile.is_email_verified %}
-                    <li><a href="{% url 'workshop_app:view_profile' %}"><span class="glyphicon glyphicon-user"></span>
-                        Profile</a></li>
-
-                    <li><a href="{% url 'workshop_app:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-{% endblock %}
-
-{% block extra %}
-
-{% endblock %}
+{% block title %}Account Activation | FOSSEE Workshops{% endblock %}
+{% block meta_description %}Check activation status for your FOSSEE workshop booking account.{% endblock %}
 
 {% block content %}
-    {% if status == '2' %}
-        <div class="container">
-            <div class="jumbotron">
-                <p> Your email is already verified, Click
-                    <a href="{% url 'workshop_app:index' %}">here</a>
-                </p>
-            </div>
-        </div>
-    {% elif status == '1' %}
-        <script type="text/javascript">
-            window.setTimeout(function () {
-                location.href = "{% url 'workshop_app:register' %}"
-            }, 3000);
-        </script>
-        <div class="container">
-            <div class="jumbotron">
-                <p> Your activation has expired please register again</p>
-            </div>
-        </div>
-    {% elif status == '0' %}
-        <div class="container">
-            <div class="jumbotron">
-                <p> Your account has been activated. Click
-                    <a href="{% url 'workshop_app:index' %}">here</a>
-                </p>
-            </div>
-        </div>
-    {% else %}
-        <script type="text/javascript">
-            window.setTimeout(function () {
-                location.href = "{% url 'workshop_app:logout' %}"
-            }, 5000);
-        </script>
+    <div class="container">
+        {% if status == '1' %}
+            <script type="text/javascript">
+                window.setTimeout(function () {
+                    location.href = "{% url 'workshop_app:register' %}";
+                }, 3000);
+            </script>
+        {% elif not status %}
+            <script type="text/javascript">
+                window.setTimeout(function () {
+                    location.href = "{% url 'workshop_app:logout' %}";
+                }, 5000);
+            </script>
+        {% endif %}
 
-        <div class="container">
-            <div class="jumbotron">
-                <h1>Activation Awaiting</h1>
-                <p>The Activation Link has been sent to your email. The link expires in <strong>24hours</strong> from
-                    the date of registration. You will be logged out automatically
+        <section class="page-hero">
+            <span class="page-eyebrow">Account Status</span>
+            {% if status == '2' %}
+                <h1 class="page-title">Your email is already verified.</h1>
+                <p class="page-subtitle">You can go straight back to the dashboard.</p>
+                <div class="page-actions">
+                    <a class="btn btn-primary" href="{% url 'workshop_app:index' %}">Open dashboard</a>
+                </div>
+            {% elif status == '1' %}
+                <h1 class="page-title">Activation expired.</h1>
+                <p class="page-subtitle">This activation link has expired, so the registration needs to be completed again.</p>
+                <div class="page-actions">
+                    <a class="btn btn-primary" href="{% url 'workshop_app:register' %}">Register again</a>
+                </div>
+            {% elif status == '0' %}
+                <h1 class="page-title">Your account is active now.</h1>
+                <p class="page-subtitle">Email verification is complete and you can continue to the portal.</p>
+                <div class="page-actions">
+                    <a class="btn btn-primary" href="{% url 'workshop_app:index' %}">Continue</a>
+                </div>
+            {% else %}
+                <h1 class="page-title">Activation email sent.</h1>
+                <p class="page-subtitle">
+                    Check your inbox for the activation link. It remains valid for <strong>24 hours</strong> from registration.
                 </p>
-            </div>
-        </div>
-    {% endif %}
+                <div class="page-actions">
+                    <a class="btn btn-outline-info" href="{% url 'workshop_app:logout' %}">Logout now</a>
+                </div>
+            {% endif %}
+        </section>
+    </div>
 {% endblock %}
