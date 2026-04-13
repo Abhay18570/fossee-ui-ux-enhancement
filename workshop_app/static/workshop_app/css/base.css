@@ -4,7 +4,7 @@
     --surface: #ffffff;
     --surface-muted: #eef4ff;
     --text: #1b2434;
-    --muted: #61708a;
+    --muted: #53627d;
     --border: #d7dfec;
     --primary: #0f6cbd;
     --primary-dark: #0a4d87;
@@ -35,6 +35,7 @@ body {
     color: var(--text);
     font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
     line-height: 1.6;
+    overflow-wrap: break-word;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -71,6 +72,11 @@ img {
 
 .skip-link:focus {
     top: 1rem;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(15, 108, 189, 0.35);
+    outline-offset: 3px;
 }
 
 .site-header {
@@ -218,6 +224,10 @@ img {
     padding: clamp(2rem, 4vw, 3.25rem) 0 clamp(3rem, 5vw, 4.25rem);
 }
 
+.base-content:focus {
+    outline: none;
+}
+
 .footer {
     margin-top: auto;
     padding: 1.25rem 0;
@@ -316,6 +326,13 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
     align-items: center;
+}
+
+.page-hero-grid > *,
+.split-layout > *,
+.two-column-layout > *,
+.footer-content > * {
+    min-width: 0;
 }
 
 .hero-copy > * + * {
@@ -519,6 +536,17 @@ select:focus,
     outline: 0;
 }
 
+.nav-link:focus-visible,
+.dropdown-item:focus-visible,
+.btn:focus-visible,
+.page-link:focus-visible,
+.form-control:focus-visible,
+.custom-select:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    box-shadow: 0 0 0 0.28rem rgba(15, 108, 189, 0.22);
+}
+
 .field-group .form-control:hover,
 .field-group .custom-select:hover,
 .field-group textarea:hover,
@@ -648,6 +676,8 @@ form .page-actions {
 
 .table-responsive {
     margin-bottom: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .table {
@@ -858,6 +888,18 @@ form .page-actions {
     .site-primary-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .footer-content {
+        gap: 1rem;
+    }
+
+    .hero-metrics,
+    .stats-grid,
+    .info-grid,
+    .card-grid,
+    .detail-list {
+        grid-template-columns: 1fr;
     }
 
     .table td,
