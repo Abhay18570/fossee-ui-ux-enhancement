@@ -68,6 +68,11 @@
         <section class="page-hero">
             <span class="page-eyebrow">CMS Page</span>
             <h1 class="page-title">{{ page.title|title }}</h1>
+            <p class="page-subtitle">Explore workshop information, updates, and resources in a cleaner, easier-to-scan layout.</p>
+            <div class="page-actions hero-actions-row">
+                <a class="btn btn-primary" href="/statistics/public">Workshop Statistics</a>
+                <a class="btn btn-outline-info" href="/workshop/login/">Portal Login</a>
+            </div>
         </section>
         <section class="content-card">
             {{ page.content | safe }}

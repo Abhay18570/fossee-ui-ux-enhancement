@@ -7,13 +7,17 @@
     <div class="container">
         <section class="page-hero">
             <div class="page-hero-grid">
-                <div>
+                <div class="hero-copy">
                     <span class="page-eyebrow">Workshop Coordination</span>
                     <h1 class="page-title">Plan workshops with less friction and more clarity.</h1>
                     <p class="page-subtitle">
                         Track workshop proposals, review schedules, and keep coordinators and instructors aligned from a single portal.
                     </p>
-                    <div class="hero-metrics mt-4">
+                    <div class="page-actions hero-actions-row">
+                        <a class="btn btn-primary" href="{% url 'workshop_app:register' %}">Get Started</a>
+                        <a class="btn btn-outline-info" href="{% url 'statistics_app:public' %}">View Statistics</a>
+                    </div>
+                    <div class="hero-metrics">
                         <article class="stat-card">
                             <span class="stat-label">For Coordinators</span>
                             <span class="stat-value">Propose</span>
@@ -30,7 +34,7 @@
                 </div>
                 <div class="content-card form-panel">
                     <h2 class="section-title">Welcome back</h2>
-                    <p class="text-muted">Use your registered username and password to continue.</p>
+                    <p class="section-intro text-muted">Use your registered username and password to continue.</p>
 
                     {% if form.errors %}
                         {% for field in form %}
